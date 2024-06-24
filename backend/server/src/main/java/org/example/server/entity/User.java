@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String name;
     private String password;
     private String email;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<WordBase> wordBases;
 
     @Override

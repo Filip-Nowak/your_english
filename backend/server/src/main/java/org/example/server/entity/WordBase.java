@@ -17,7 +17,7 @@ public class WordBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
+    @OneToMany(mappedBy = "wordBase")
     private List<Relation> relations;
     private String name;
     @ManyToOne
