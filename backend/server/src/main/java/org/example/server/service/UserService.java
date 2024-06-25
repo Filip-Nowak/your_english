@@ -15,4 +15,8 @@ public class UserService {
         String email = jwtService.extractUserEmail(header.substring(7));
         return userRepository.findByEmail(email).orElse(null);
     }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
 }

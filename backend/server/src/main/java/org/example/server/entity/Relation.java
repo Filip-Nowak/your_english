@@ -19,5 +19,6 @@ public class Relation {
     private String meaning;
     @ManyToOne
     private WordBase wordBase;
+    private int number;
 
 }
