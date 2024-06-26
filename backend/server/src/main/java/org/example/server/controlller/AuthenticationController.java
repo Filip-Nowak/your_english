@@ -8,36 +8,34 @@ import org.example.server.security.auth.AuthenticationResponse;
 import org.example.server.security.auth.AuthenticationService;
 import org.example.server.security.auth.RegisterRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseModel> register(
+    public ResponseEntity<AuthenticationResponse> register(
             @Valid @RequestBody RegisterRequest request
     ) {
         AuthenticationResponse response;
         try {
             response = authenticationService.register(request);
         } catch (RuntimeException e) {
-            return ResponseEntity.ok(ResponseModel.builder()
-                    .error(true)
-                    .message(e.getMessage()).build());
+            return ResponseEntity.ok(AuthenticationResponse.builder()
+                    .errors("email:Email already exists;")
+                    .build());
         }
-        return ResponseEntity.ok(ResponseModel.builder()
-                .data(response)
-                .build());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<ResponseModel> register(
+    public ResponseEntity<AuthenticationResponse> register(
             @RequestBody AuthenticationRequest request
     ) {
         System.out.println("authenticating");
@@ -45,14 +43,12 @@ public class AuthenticationController {
         try{
             response=authenticationService.authenticate(request);
         }catch (RuntimeException e){
-            return ResponseEntity.ok(ResponseModel.builder()
-                    .error(true)
-                    .message("invalid credentials").build());
+            return ResponseEntity.ok(AuthenticationResponse.builder()
+                    .errors("wrong credentials")
+                    .build());
         }
         System.out.println(request);
-        return ResponseEntity.ok(ResponseModel.builder()
-                .data(response)
-                .build());
+        return ResponseEntity.ok(response);
 
     }
 }
