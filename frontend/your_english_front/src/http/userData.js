@@ -19,7 +19,7 @@ async function fetchDataWithToken(url, method, body) {
   });
   if (response.ok) {
     const data = await response.json();
-    return data.data;
+    return data;
   } else {
     if (response.status === 401 || response.status === 403) {
       localStorage.removeItem("token");
@@ -27,4 +27,8 @@ async function fetchDataWithToken(url, method, body) {
     }
     return null;
   }
+}
+
+export async function getUserData() {
+  return await fetchDataWithToken(`${url}/user`, "get");
 }

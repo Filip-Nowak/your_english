@@ -17,13 +17,65 @@
 .navBtn {
   color: white;
   font-size: 1.5rem;
-  margin: 1rem;
+  margin-top: 1rem;
   text-decoration: none;
   width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 .buttons {
   height: 60vh;
 }
 .bottom {
   height: 15vh;
+}
+.wordbaseList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  color: #f0f0f0;
+  font-size: 1.3rem;
+}
+
+.noWordbases {
+  color: #aaaaaa;
+}
+
+.userData {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  color: #f0f0f0;
+  font-size: 1.3rem;
+  justify-content: space-between;
+}
+.userIcon {
+  width: 70%;
+  height: 7vh;
+  font-size: 2rem;
+  background-color: #f0f0f0;
+  color: #333333;
+  border-radius: 3.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.logoutIcon {
+  font-size: 2.5rem;
+  transform: rotate(180deg);
+}
+.selectedBtn {
+  color: #333333;
+  background-color: #f0f0f0;
+}
+.wordbase {
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem;
+  border-top: white solid 0.1rem;
+  letter-spacing: 0.2rem;
 }

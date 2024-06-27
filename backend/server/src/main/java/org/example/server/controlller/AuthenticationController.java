@@ -47,7 +47,6 @@ public class AuthenticationController {
                     .errors("wrong credentials")
                     .build());
         }
-        System.out.println(request);
         return ResponseEntity.ok(response);
 
     }

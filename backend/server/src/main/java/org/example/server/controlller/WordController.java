@@ -27,11 +27,11 @@ public class WordController {
     @GetMapping("/wordbases")
     public ResponseEntity<ResponseModel> getWordBases(@RequestHeader(name = "Authorization") String header){
         User user = userService.getUserByHeader(header);
-        List<WordBase> wordBases = user.getWordBases();
-        System.out.println("wb"+wordBases.size());
-        List<WordBaseModel> wordBaseModels = wordBaseMapper.toModels(wordBases);
+        List<String> wordbasesNames = user.getWordBases().stream()
+                .map(WordBase::getName)
+                .toList();
         return ResponseEntity.ok(ResponseModel.builder()
-                .data(wordBaseModels)
+                .data(wordbasesNames)
                 .build());
     }
     @PostMapping("/wordbase")

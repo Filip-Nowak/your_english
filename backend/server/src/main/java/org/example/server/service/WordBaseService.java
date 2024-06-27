@@ -8,6 +8,8 @@ import org.example.server.repository.RelationRepository;
 import org.example.server.repository.WordBaseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class WordBaseService {
@@ -57,5 +59,8 @@ public class WordBaseService {
     public void deleteWordBase(WordBase wordBase) {
         relationRepository.deleteAll(wordBase.getRelations());
         wordBaseRepository.delete(wordBase);
+    }
+    public List<String> getWordBasesNames(Long userId){
+        return wordBaseRepository.findNamesByUserId(userId);
     }
 }

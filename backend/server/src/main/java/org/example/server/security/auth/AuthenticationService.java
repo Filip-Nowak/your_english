@@ -36,8 +36,6 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        System.out.println(request.getEmail());
-        System.out.println(userRepository.findByEmail(request.getEmail()));
         if(!userRepository.existsByEmail(request.getEmail())){
             System.out.println("User not found");
             throw new RuntimeException("User not found");
