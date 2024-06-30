@@ -1,0 +1,16 @@
+.text {
+  font-size: 3rem;
+  text-align: center;
+  margin-top: 5vh;
+}
+.input {
+  font-size: 3rem;
+  width: 70%;
+}
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 2vh;
+  font-size: 1.5rem;
+  height: 1.5rem;
+}

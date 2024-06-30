@@ -1,0 +1,18 @@
+.wordbasesContainer {
+  align-items: center;
+  justify-content: start;
+  width: 70%;
+  height: 50vh;
+  padding: 20px;
+  margin-top: 5vh;
+  margin-right: auto;
+  margin-left: auto;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+.empty {
+  font-size: 3rem;
+  margin-top: 5vh;
+  text-align: center;
+  color: #555555;
+}

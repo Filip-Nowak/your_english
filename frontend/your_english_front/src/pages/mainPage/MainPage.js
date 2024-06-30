@@ -3,7 +3,9 @@ import { Outlet, useLoaderData } from "react-router-dom";
 import styles from "./mainPage.module.css";
 import SideBar from "./SideBar";
 export default function MainPage() {
-  const { user, wordbases } = useLoaderData();
+  const { userResponse, wordbasesResponse } = useLoaderData();
+  const user = userResponse.data;
+  const wordbases = wordbasesResponse.data;
   console.log(user, wordbases);
   return (
     <div className={styles.container}>
