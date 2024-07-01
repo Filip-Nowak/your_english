@@ -79,7 +79,7 @@ public class WordController {
                 .findFirst()
                 .orElse(null);
         if (wordBase == null) {
-            return ResponseEntity.badRequest().body(ResponseModel.builder()
+            return ResponseEntity.ok().body(ResponseModel.builder()
                     .message("WordBase with this name does not exist")
                     .error(true)
                     .build());
@@ -101,7 +101,7 @@ public class WordController {
                 .findFirst()
                 .orElse(null);
         if (wordBase == null) {
-            return ResponseEntity.badRequest().body(ResponseModel.builder()
+            return ResponseEntity.ok().body(ResponseModel.builder()
                     .message("WordBase with this name does not exist")
                     .error(true)
                     .build());
@@ -111,7 +111,7 @@ public class WordController {
                 .findFirst()
                 .orElse(null);
         if (relation == null) {
-            return ResponseEntity.badRequest().body(ResponseModel.builder()
+            return ResponseEntity.ok().body(ResponseModel.builder()
                     .message("Relation with this number does not exist")
                     .error(true)
                     .build());

@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 2rem;
+  overflow: hidden;
 }
 .name {
   font-size: 2rem;
@@ -15,12 +16,21 @@
   letter-spacing: 0.2rem;
   margin-left: 1rem;
   width: 50%;
+  margin-left: 10%;
 }
 .count {
   font-family: "Roboto", sans-serif;
   font-size: 1.5rem;
-  width: 30%;
+  width: 40%;
 }
 .delete {
   color: red;
+  font-size: 2.5rem;
+  text-align: center;
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 3px solid black;
 }

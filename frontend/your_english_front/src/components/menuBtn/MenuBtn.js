@@ -5,12 +5,12 @@ export default function MenuBtn({
   text,
   icon = null,
   height = "25vh",
-  width = "32vh",
+  width = "19vw",
   fontSize = "3rem",
   containerStyle = {},
   textStyle = {},
+  disabled = false,
 }) {
-  console.log(height);
   let wordCount = text.split(" ").length;
   let textsize = fontSize;
   if (wordCount === 1) {
@@ -18,11 +18,19 @@ export default function MenuBtn({
       textsize = 30 / text.length;
     }
   }
+  const handleClick = () => {
+    if (!disabled) onClick();
+  };
   return (
     <div
       className={styles.container}
-      onClick={onClick}
-      style={{ height: height, width: width, ...containerStyle }}
+      onClick={handleClick}
+      style={{
+        height: height,
+        width: width,
+        ...containerStyle,
+        opacity: disabled ? 0.5 : 1,
+      }}
     >
       {icon === null ? (
         ""

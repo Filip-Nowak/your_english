@@ -45,3 +45,29 @@ export async function deleteWordbase(name) {
 export async function getWordbase(name) {
   return await fetchDataWithToken(`${url}/wordbase/${name}`, "get");
 }
+export async function updateRelation(wordBaseName, number, word, meaning) {
+  return await fetchDataWithToken(
+    `${url}/wordbase/${wordBaseName}/relation/${number}`,
+    "put",
+    {
+      word: word,
+      meaning: meaning,
+    }
+  );
+}
+export async function addRelation(wordbaseName, word, meaning) {
+  return await fetchDataWithToken(
+    `${url}/wordbase/${wordbaseName}/relation`,
+    "post",
+    {
+      word: word,
+      meaning: meaning,
+    }
+  );
+}
+export async function deleteRelation(wordbaseName, number) {
+  return await fetchDataWithToken(
+    `${url}/wordbase/${wordbaseName}/relation/${number}`,
+    "delete"
+  );
+}
