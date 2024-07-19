@@ -14,8 +14,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 @CrossOrigin
+@RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -49,5 +49,11 @@ public class AuthenticationController {
         }
         return ResponseEntity.ok(response);
 
+    }
+    @GetMapping("/logout/success")
+    public ResponseEntity<ResponseModel> logout(){
+        return ResponseEntity.ok(ResponseModel.builder()
+                .message("logout success")
+                .build());
     }
 }

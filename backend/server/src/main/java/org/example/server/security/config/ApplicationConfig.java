@@ -1,4 +1,4 @@
-package org.example.server.security;
+package org.example.server.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.server.repository.UserRepository;
