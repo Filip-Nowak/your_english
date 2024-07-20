@@ -8,7 +8,9 @@ import org.example.server.repository.RelationRepository;
 import org.example.server.repository.WordBaseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +64,24 @@ public class WordBaseService {
     }
     public List<String> getWordBasesNames(Long userId){
         return wordBaseRepository.findNamesByUserId(userId);
+    }
+
+    public List<WordBase> getWordBasesWithVersion(List<WordBase> wordBases, Map<String, String> params) {
+        List<WordBase>output=new LinkedList<>();
+        for(Map.Entry<String, String> entry : params.entrySet()) {
+            for(WordBase wordBase:wordBases){
+                if(wordBase.getName().equals(entry.getKey()) && wordBase.getVersion()==Long.parseLong(entry.getValue())){
+                    output.add(wordBase);
+                }
+            }
+        }
+        if(output.size()!=params.size()){
+            throw new RuntimeException("Word base not found");
+        }
+        return output;
+    }
+
+    public Relation getRelationById(Long aLong) {
+        return relationRepository.findById(aLong).orElse(null);
     }
 }

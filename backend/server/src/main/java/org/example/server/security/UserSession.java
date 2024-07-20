@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserSession implements Serializable {
-    private String value="empty";
+    private SessionData data;
     private final HttpSession httpSession;
     @Autowired
     public UserSession(HttpSession httpSession) {

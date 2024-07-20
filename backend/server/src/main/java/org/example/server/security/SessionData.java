@@ -4,11 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.server.entity.Relation;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SessionData {
-    private String value;
+public class SessionData implements Serializable {
+    private List<Long> wordBaseIds;
+    private List<Long> relationIds;
 }

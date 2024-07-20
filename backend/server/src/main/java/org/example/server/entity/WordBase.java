@@ -22,4 +22,5 @@ public class WordBase {
     private String name;
     @ManyToOne
     private User user;
+    private long version;
 }
