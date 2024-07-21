@@ -16,4 +16,5 @@ import java.util.List;
 public class SessionData implements Serializable {
     private List<Long> wordBaseIds;
     private List<Long> relationIds;
+    private List<Long> versions;
 }

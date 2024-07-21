@@ -27,21 +27,19 @@ public class PracticeController {
     private final UserSession userSession;
 
     @GetMapping("/flashcards")
-    public ResponseEntity<ResponseModel> getFlashcards(@RequestHeader(name = "Authorization") String header, @RequestParam() int page, @RequestParam Map<String, String> params) {
+    public ResponseEntity<ResponseModel> getFlashcards(@RequestHeader(name = "Authorization") String header, @RequestParam() int page, @RequestParam List<String> w,@RequestParam(required = false) boolean newSet) {
         try {
-//            System.out.println(userSession.getData());
             User user = userService.getUserByHeader(header);
             if(page<0){
                 throw new RuntimeException("Page number must be greater than or equal to 0");
             }
-            params.remove("page");
-            List<WordBase> wordBaseList=wordBaseService.getWordBasesWithVersion(user.getWordBases(), params);
-            List<RelationModel> relationModels = practiceService.getFlashcards(userSession,wordBaseList, page);
+            List<WordBase> wordBaseList=new LinkedList<>();
+            for(String s:w){
+                wordBaseList.add(wordBaseService.getWordBaseByName(s,user.getId()));
+            }
+            List<RelationModel> relationModels = practiceService.getFlashcards(userSession,wordBaseList, page,newSet);
             if(relationModels.isEmpty()){
-                return ResponseEntity.ok(ResponseModel.builder()
-                        .error(true)
-                        .message("No more flashcards")
-                        .build());
+                throw new RuntimeException("No more flashcards");
             }
             return ResponseEntity.ok(ResponseModel.builder()
                     .error(false)

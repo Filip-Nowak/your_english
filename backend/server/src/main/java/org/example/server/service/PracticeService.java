@@ -17,9 +17,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PracticeService {
     private final WordBaseService wordBaseService;
-    public List<RelationModel> getFlashcards(UserSession userSession, List<WordBase> wordBaseList, int page) {
+    public List<RelationModel> getFlashcards(UserSession userSession, List<WordBase> wordBaseList, int page,boolean newSet) {
         SessionData sessionData = userSession.getData();
-        if (sessionData == null) {
+        if(sessionData!=null &&areVersionsDifferent(sessionData.getVersions(), wordBaseList)){
+            throw new RuntimeException("Word base has been updated");
+        }
+        if (newSet||sessionData == null) {
             sessionData = generateSessionData(wordBaseList);
             userSession.setData(sessionData);
         }
@@ -41,6 +44,15 @@ public class PracticeService {
         return relationModels;
     }
 
+    private boolean areVersionsDifferent(List<Long> versions, List<WordBase> wordBaseList) {
+        for(int i=0;i<versions.size();i++){
+            if(versions.get(i) != wordBaseList.get(i).getVersion()){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private SessionData generateSessionData(List<WordBase> wordBaseList) {
         wordBaseList = sortAlphabetically(wordBaseList);
         List<Long> wordBaseIds = wordBaseList.stream().map(WordBase::getId).toList();
@@ -49,9 +61,11 @@ public class PracticeService {
             relationIds.addAll(wordBase.getRelations().stream().map(Relation::getId).toList());
         }
         relationIds = scramble(relationIds);
+        List<Long> versions = wordBaseList.stream().map(WordBase::getVersion).toList();
         return SessionData.builder()
                 .wordBaseIds(wordBaseIds)
                 .relationIds(relationIds)
+                .versions(versions)
                 .build();
     }
 

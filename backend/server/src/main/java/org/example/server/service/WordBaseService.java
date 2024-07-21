@@ -2,9 +2,11 @@ package org.example.server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.server.entity.Relation;
+import org.example.server.entity.User;
 import org.example.server.entity.WordBase;
 import org.example.server.model.WordBaseModel;
 import org.example.server.repository.RelationRepository;
+import org.example.server.repository.UserRepository;
 import org.example.server.repository.WordBaseRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class WordBaseService {
     private final WordBaseRepository wordBaseRepository;
     private final RelationRepository relationRepository;
     public void saveWordBase(WordBase wordBase) {
+        wordBase.setVersion(wordBase.getVersion()+1);
         wordBaseRepository.save(wordBase);
         relationRepository.saveAll(wordBase.getRelations());
     }
@@ -30,8 +33,7 @@ public class WordBaseService {
                 .number(number)
                 .build();
         wordBase.getRelations().add(relation);
-        wordBaseRepository.save(wordBase);
-        relationRepository.save(relation);
+        saveWordBase(wordBase);
         return wordBase;
     }
     public boolean doesWordBaseExist(String name, Long userId){
@@ -40,7 +42,7 @@ public class WordBaseService {
     public Relation editRelation(Relation relation, String word, String meaning){
         relation.setWord(word);
         relation.setMeaning(meaning);
-        relationRepository.save(relation);
+        saveWordBase(relation.getWordBase());
         return relation;
     }
 
@@ -55,7 +57,7 @@ public class WordBaseService {
         wordBase.getRelations().stream()
                 .filter(r -> r.getNumber() > number)
                 .forEach(r -> r.setNumber(r.getNumber()-1));
-        wordBaseRepository.save(wordBase);
+        saveWordBase(wordBase);
     }
 
     public void deleteWordBase(WordBase wordBase) {
@@ -66,22 +68,12 @@ public class WordBaseService {
         return wordBaseRepository.findNamesByUserId(userId);
     }
 
-    public List<WordBase> getWordBasesWithVersion(List<WordBase> wordBases, Map<String, String> params) {
-        List<WordBase>output=new LinkedList<>();
-        for(Map.Entry<String, String> entry : params.entrySet()) {
-            for(WordBase wordBase:wordBases){
-                if(wordBase.getName().equals(entry.getKey()) && wordBase.getVersion()==Long.parseLong(entry.getValue())){
-                    output.add(wordBase);
-                }
-            }
-        }
-        if(output.size()!=params.size()){
-            throw new RuntimeException("Word base not found");
-        }
-        return output;
-    }
-
     public Relation getRelationById(Long aLong) {
         return relationRepository.findById(aLong).orElse(null);
+    }
+    private final UserRepository userRepository;
+
+    public WordBase getWordBaseByName(String s, Long id) {
+        return wordBaseRepository.findByNameAndUserId(s,id).orElseThrow(()->new RuntimeException("Word base not found: "+s));
     }
 }
