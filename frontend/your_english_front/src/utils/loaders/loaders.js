@@ -1,3 +1,4 @@
+import { startFlashcards } from "../../http/practice";
 import {
   getUserData,
   getWordbase,
@@ -20,4 +21,38 @@ export async function singleWordBaseLoader({ params }) {
   const name = params.name;
   const wordbaseResponse = await getWordbase(name);
   return { wordbaseResponse: wordbaseResponse };
+}
+export async function practiceLoader() {
+  const wordbasesResponse = await getWordbases();
+  return { wordbasesResponse: wordbasesResponse };
+}
+export async function flashcardsLoader() {
+  const query = window.location.search;
+  const params = {};
+  for (let param of query.substring(1).split("&")) {
+    let [key, value] = param.split("=");
+    value = decodeURIComponent(value);
+    if (params[key] !== undefined) {
+      if (!Array.isArray(params[key])) {
+        params[key] = [params[key]];
+      }
+      params[key].push(value);
+    } else {
+      params[key] = value;
+    }
+  }
+  console.log(params);
+  if (params.w === undefined) {
+    window.location.href = "/practice";
+    return;
+  }
+  if (!Array.isArray(params.w)) {
+    params.w = [params.w];
+  }
+  const response = await startFlashcards(params.w);
+  if (response.error) {
+    window.location.href = "/";
+    return;
+  }
+  return { response: response };
 }

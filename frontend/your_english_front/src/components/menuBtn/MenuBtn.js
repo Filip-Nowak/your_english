@@ -37,6 +37,8 @@ export default function MenuBtn({
       ) : (
         <div
           style={{
+            display: "flex",
+            justifyContent: "center",
             fontSize: fontSize,
             width: "30%",
             textAlign: "center",

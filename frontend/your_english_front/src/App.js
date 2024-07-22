@@ -13,11 +13,15 @@ import HomeLayout from "./layouts/homeLayout/HomeLayout";
 import MainPage from "./pages/mainPage/MainPage";
 import WordbasesLayout from "./layouts/wordbasesLayout/WordbasesLayout";
 import {
+  flashcardsLoader,
   homeLoader,
+  practiceLoader,
   sidebarLoader,
   singleWordBaseLoader,
   wordbasesLoader,
 } from "./utils/loaders/loaders";
+import PracticeLayout from "./layouts/practiceLayout/PracticeLayout";
+import FlashcardsLayout from "./layouts/practice/flashcards/FlashcardsLayout";
 
 function App() {
   const router = createBrowserRouter(
@@ -37,7 +41,18 @@ function App() {
             element={<SingleWordBaseLayout />}
             loader={singleWordBaseLoader}
           />
-          <Route path="/practice" element={<div>Practice</div>} />
+          <Route path="practice">
+            <Route
+              path=""
+              element={<PracticeLayout />}
+              loader={practiceLoader}
+            />
+            <Route
+              path="flashcards"
+              element={<FlashcardsLayout />}
+              loader={flashcardsLoader}
+            />
+          </Route>
           <Route path="/settings" element={<div>Settings</div>} />
         </Route>
       </Route>

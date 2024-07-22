@@ -3,7 +3,7 @@ export async function getWordbases() {
   return await fetchDataWithToken(`${url}/wordbases`, "get");
 }
 
-async function fetchDataWithToken(url, method, body) {
+export async function fetchDataWithToken(url, method, body) {
   const token = localStorage.getItem("token");
   if (!token) {
     window.location.href = "/login";
