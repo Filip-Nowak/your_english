@@ -19,8 +19,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/api")
-@CrossOrigin
 public class WordController {
     private final UserService userService;
     private final WordBaseMapper wordBaseMapper;

@@ -9,3 +9,11 @@ export async function startFlashcards(wordbases) {
   link += `newSet=true&page=0`;
   return await fetchDataWithToken(link, "get");
 }
+export async function loadFlashCards(wordbases, page) {
+  let link = `${url}/flashcards?`;
+  for (let wordbase of wordbases) {
+    link += `w=${wordbase}&`;
+  }
+  link += `page=${page}`;
+  return await fetchDataWithToken(link, "get");
+}

@@ -39,16 +39,16 @@ public class ServerApplication {
                 .relations(new LinkedList<>())
                 .user(user).build();
         wordBaseService.saveWordBase(wordBase);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 25; i++) {
             wordBaseService.addRelation(wordBase, "word" + i, "meaning" + i);
         }
-        WordBase wordBase2 = WordBase.builder()
-                .name("my wordbase2")
-                .relations(new LinkedList<>())
-                .user(user).build();
-        wordBaseService.saveWordBase(wordBase2);
-        for (int i = 0; i < 100; i++) {
-            wordBaseService.addRelation(wordBase2, "wordxd" + i, "meaningxd" + i);
-        }
+//        WordBase wordBase2 = WordBase.builder()
+//                .name("my wordbase2")
+//                .relations(new LinkedList<>())
+//                .user(user).build();
+//        wordBaseService.saveWordBase(wordBase2);
+//        for (int i = 0; i < 100; i++) {
+//            wordBaseService.addRelation(wordBase2, "wordxd" + i, "meaningxd" + i);
+//        }
     }
 }

@@ -16,6 +16,7 @@ export async function fetchDataWithToken(url, method, body) {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(body),
+    credentials: "include",
   });
   if (response.ok) {
     const data = await response.json();

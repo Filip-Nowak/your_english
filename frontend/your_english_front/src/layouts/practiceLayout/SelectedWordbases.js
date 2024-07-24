@@ -4,11 +4,15 @@ import styles from "./practice.module.css";
 import WordbaseElement from "./WordbaseElement";
 import WordbaseModal from "./WordbaseModal";
 import { useLoaderData } from "react-router-dom";
-export default function SelectedWordbases({ modeSelected }) {
+export default function SelectedWordbases({
+  modeSelected,
+  selectedWordbases,
+  setSelectedWordbases,
+  handleStart,
+}) {
   const [adding, setAdding] = useState(false);
   const data = useLoaderData();
   const wordbases = data.wordbasesResponse.data;
-  const [selectedWordbases, setSelectedWordbases] = useState([]);
   const handleAdd = () => {
     setAdding(true);
   };
@@ -58,6 +62,7 @@ export default function SelectedWordbases({ modeSelected }) {
             onClick={handleAdd}
           />
           <MenuBtn
+            onClick={handleStart}
             text={"start"}
             width={"12vw"}
             height={"7vh"}

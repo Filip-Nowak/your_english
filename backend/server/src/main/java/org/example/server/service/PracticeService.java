@@ -11,23 +11,27 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PracticeService {
     private final WordBaseService wordBaseService;
-    public List<RelationModel> getFlashcards(UserSession userSession, List<WordBase> wordBaseList, int page,boolean newSet) {
+
+    public List<RelationModel> getFlashcards(UserSession userSession, List<WordBase> wordBaseList, int page, boolean newSet) throws RuntimeException{
         SessionData sessionData = userSession.getData();
-        if(sessionData!=null &&areVersionsDifferent(sessionData.getVersions(), wordBaseList)){
-            throw new RuntimeException("Word base has been updated");
-        }
-        if (newSet||sessionData == null) {
-            sessionData = generateSessionData(wordBaseList);
+        if(sessionData==null || newSet || !areTheSameSet(sessionData.getWordBaseIds(),wordBaseList)){
+            sessionData=generateSessionData(wordBaseList);
             userSession.setData(sessionData);
+        }else{
+            if(areVersionsDifferent(sessionData.getVersions(),wordBaseList)){
+                throw new RuntimeException("Word bases have been modified");
+            }
         }
+
         int startIndex = page * 20;
-        if(startIndex >= sessionData.getRelationIds().size()){
+        if (startIndex >= sessionData.getRelationIds().size()) {
             return new LinkedList<>();
         }
         List<RelationModel> relationModels = new LinkedList<>();
@@ -44,9 +48,22 @@ public class PracticeService {
         return relationModels;
     }
 
+    private boolean areTheSameSet(List<Long> wordBaseIds, List<WordBase> wordBaseList) {
+        if (wordBaseIds.size() != wordBaseList.size()) {
+            return false;
+        }
+        wordBaseList = sortAlphabetically(wordBaseList);
+        for (int i = 0; i < wordBaseIds.size(); i++) {
+            if (!Objects.equals(wordBaseIds.get(i), wordBaseList.get(i).getId())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private boolean areVersionsDifferent(List<Long> versions, List<WordBase> wordBaseList) {
-        for(int i=0;i<versions.size();i++){
-            if(versions.get(i) != wordBaseList.get(i).getVersion()){
+        for (int i = 0; i < versions.size(); i++) {
+            if (versions.get(i) != wordBaseList.get(i).getVersion()) {
                 return true;
             }
         }

@@ -51,8 +51,10 @@ export async function flashcardsLoader() {
   }
   const response = await startFlashcards(params.w);
   if (response.error) {
-    window.location.href = "/";
-    return;
+    console.log(response.message);
+    // window.location.href = "/";
+    return null;
   }
+  response.data.wordbases = params.w;
   return { response: response };
 }

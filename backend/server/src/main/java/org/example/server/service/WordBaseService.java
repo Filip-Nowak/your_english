@@ -33,7 +33,7 @@ public class WordBaseService {
                 .number(number)
                 .build();
         wordBase.getRelations().add(relation);
-        saveWordBase(wordBase);
+        relationRepository.save(relation);
         return wordBase;
     }
     public boolean doesWordBaseExist(String name, Long userId){

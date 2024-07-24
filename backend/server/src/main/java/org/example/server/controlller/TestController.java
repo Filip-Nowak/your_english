@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @org.springframework.web.bind.annotation.RestController
 public class TestController {
     private final UserService userService;
