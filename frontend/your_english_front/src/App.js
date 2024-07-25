@@ -13,6 +13,7 @@ import HomeLayout from "./layouts/homeLayout/HomeLayout";
 import MainPage from "./pages/mainPage/MainPage";
 import WordbasesLayout from "./layouts/wordbasesLayout/WordbasesLayout";
 import {
+  choiceLoader,
   flashcardsLoader,
   homeLoader,
   practiceLoader,
@@ -22,6 +23,7 @@ import {
 } from "./utils/loaders/loaders";
 import PracticeLayout from "./layouts/practiceLayout/PracticeLayout";
 import FlashcardsLayout from "./layouts/practice/flashcards/FlashcardsLayout";
+import MultipleChoiceLayout from "./layouts/practice/choice/MultipleChoiceLayout";
 
 function App() {
   const router = createBrowserRouter(
@@ -51,6 +53,11 @@ function App() {
               path="flashcards"
               element={<FlashcardsLayout />}
               loader={flashcardsLoader}
+            />
+            <Route
+              path="choice"
+              element={<MultipleChoiceLayout />}
+              loader={choiceLoader}
             />
           </Route>
           <Route path="/settings" element={<div>Settings</div>} />

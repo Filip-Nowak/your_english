@@ -6,26 +6,40 @@ import ModeSelector from "./ModeSelector";
 export default function PracticeLayout() {
   const [selectedMode, setSelectedMode] = useState(null);
   const [selectedWordbases, setSelectedWordbases] = useState([]);
-
   const modes = [
-    { name: "flashcards", icon: <i class="fa-solid fa-clone"></i> },
-    { name: "fultiple Choice", icon: <i class="fa-solid fa-list"></i> },
     {
-      name: "fill in the Blank",
-      icon: <i class="fa-solid fa-pen-to-square"></i>,
+      name: "flashcards",
+      icon: <i class="fa-solid fa-clone"></i>,
+      urlName: "flashcards",
     },
-    { name: "connect", icon: <i class="fa-solid fa-link"></i> },
-    { name: "random", icon: <i class="fa-solid fa-random"></i> },
+    {
+      name: "multiple Choice",
+      icon: <i class="fa-solid fa-list"></i>,
+      urlName: "choice",
+    },
+    {
+      name: "insert answer",
+      icon: <i class="fa-solid fa-pen-to-square"></i>,
+      urlName: "insert",
+    },
+    {
+      name: "connect",
+      icon: <i class="fa-solid fa-link"></i>,
+      urlName: "connect",
+    },
+    {
+      name: "random",
+      icon: <i class="fa-solid fa-random"></i>,
+      urlName: "random",
+    },
   ];
   const handleStart = () => {
-    const arr = modes[selectedMode].name.split(" ");
-    const mode = arr.join("-").toLowerCase();
     let params = "";
     selectedWordbases.forEach((wordbase) => {
       params += `w=${wordbase}&`;
     });
     params = params.slice(0, -1);
-    window.location.href = `/practice/${mode}?${params}`;
+    window.location.href = `/practice/${modes[selectedMode].urlName}?${params}`;
   };
   return (
     <div style={{ width: "100%" }}>

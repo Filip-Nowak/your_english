@@ -2,18 +2,26 @@ import { fetchDataWithToken } from "./userData";
 
 const url = "http://localhost:8080/api/practice";
 export async function startFlashcards(wordbases) {
-  let link = `${url}/flashcards?`;
-  for (let wordbase of wordbases) {
-    link += `w=${wordbase}&`;
-  }
-  link += `newSet=true&page=0`;
+  const link = getLink("flashcards", wordbases, 0, true);
   return await fetchDataWithToken(link, "get");
 }
 export async function loadFlashCards(wordbases, page) {
-  let link = `${url}/flashcards?`;
+  const link = getLink("flashcards", wordbases, page);
+  return await fetchDataWithToken(link, "get");
+}
+
+export async function startChoice(wordbases) {
+  const link = getLink("choice", wordbases);
+  return await fetchDataWithToken(link, "get");
+}
+
+function getLink(name, wordbases, page, newSet) {
+  let link = `${url}/${name}?`;
   for (let wordbase of wordbases) {
     link += `w=${wordbase}&`;
   }
-  link += `page=${page}`;
-  return await fetchDataWithToken(link, "get");
+  link = link.slice(0, -1);
+  if (page || page === 0) link += `&page=${page}`;
+  if (newSet) link += `&newSet=${newSet}`;
+  return link;
 }

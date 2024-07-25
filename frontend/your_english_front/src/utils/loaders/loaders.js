@@ -1,4 +1,4 @@
-import { startFlashcards } from "../../http/practice";
+import { startChoice, startFlashcards } from "../../http/practice";
 import {
   getUserData,
   getWordbase,
@@ -27,6 +27,30 @@ export async function practiceLoader() {
   return { wordbasesResponse: wordbasesResponse };
 }
 export async function flashcardsLoader() {
+  const params = getParams();
+  if (params === undefined) {
+    return null;
+  }
+  const response = await startFlashcards(params.w);
+  if (response.error) {
+    console.log(response.message);
+    // window.location.href = "/";
+    return null;
+  }
+  response.data.wordbases = params.w;
+  return { response: response };
+}
+
+export async function choiceLoader() {
+  const params = getParams();
+  if (params === undefined) {
+    return null;
+  }
+  const response = await startChoice(params.w);
+  return { response: response };
+}
+
+function getParams() {
   const query = window.location.search;
   const params = {};
   for (let param of query.substring(1).split("&")) {
@@ -41,7 +65,6 @@ export async function flashcardsLoader() {
       params[key] = value;
     }
   }
-  console.log(params);
   if (params.w === undefined) {
     window.location.href = "/practice";
     return;
@@ -49,12 +72,5 @@ export async function flashcardsLoader() {
   if (!Array.isArray(params.w)) {
     params.w = [params.w];
   }
-  const response = await startFlashcards(params.w);
-  if (response.error) {
-    console.log(response.message);
-    // window.location.href = "/";
-    return null;
-  }
-  response.data.wordbases = params.w;
-  return { response: response };
+  return params;
 }
