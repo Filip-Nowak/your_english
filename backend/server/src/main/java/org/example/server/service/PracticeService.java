@@ -3,6 +3,7 @@ package org.example.server.service;
 import lombok.RequiredArgsConstructor;
 import org.example.server.entity.Relation;
 import org.example.server.entity.WordBase;
+import org.example.server.model.ChoiceModel;
 import org.example.server.model.RelationModel;
 import org.example.server.security.SessionData;
 import org.example.server.security.UserSession;
@@ -19,17 +20,8 @@ import java.util.stream.Collectors;
 public class PracticeService {
     private final WordBaseService wordBaseService;
 
-    public List<RelationModel> getFlashcards(UserSession userSession, List<WordBase> wordBaseList, int page, boolean newSet) throws RuntimeException{
-        SessionData sessionData = userSession.getData();
-        if(sessionData==null || newSet || !areTheSameSet(sessionData.getWordBaseIds(),wordBaseList)){
-            sessionData=generateSessionData(wordBaseList);
-            userSession.setData(sessionData);
-        }else{
-            if(areVersionsDifferent(sessionData.getVersions(),wordBaseList)){
-                throw new RuntimeException("Word bases have been modified");
-            }
-        }
-
+    public List<RelationModel> getFlashcards(UserSession userSession, List<WordBase> wordBaseList, int page, boolean newSet) throws RuntimeException {
+        SessionData sessionData = getSessionData(userSession.getData(), userSession, wordBaseList, newSet);
         int startIndex = page * 20;
         if (startIndex >= sessionData.getRelationIds().size()) {
             return new LinkedList<>();
@@ -70,6 +62,18 @@ public class PracticeService {
         return false;
     }
 
+    private SessionData getSessionData(SessionData sessionData, UserSession userSession, List<WordBase> wordBaseList, boolean newSet) {
+        if (sessionData == null || newSet || !areTheSameSet(sessionData.getWordBaseIds(), wordBaseList)) {
+            sessionData = generateSessionData(wordBaseList);
+            userSession.setData(sessionData);
+        } else {
+            if (areVersionsDifferent(sessionData.getVersions(), wordBaseList)) {
+                throw new RuntimeException("Word bases have been modified");
+            }
+        }
+        return sessionData;
+    }
+
     private SessionData generateSessionData(List<WordBase> wordBaseList) {
         wordBaseList = sortAlphabetically(wordBaseList);
         List<Long> wordBaseIds = wordBaseList.stream().map(WordBase::getId).toList();
@@ -98,5 +102,74 @@ public class PracticeService {
 
     private List<WordBase> sortAlphabetically(List<WordBase> wordBaseList) {
         return wordBaseList.stream().sorted(Comparator.comparing(WordBase::getName)).collect(Collectors.toList());
+    }
+
+
+    public List<ChoiceModel> getChoice(List<WordBase> wordBaseList) {
+        List<Relation> relations = getRelations(wordBaseList);
+        List<ChoiceModel> choiceModels = new LinkedList<>();
+        for (Relation relation : relations) {
+            boolean language = Math.random() < 0.5;
+            ChoiceModel choiceModel = new ChoiceModel();
+            choiceModel.setWord(language ? relation.getWord() : relation.getMeaning());
+            List<String> meanings = new LinkedList<>();
+            meanings.add(language ? relation.getMeaning() : relation.getWord());
+            for (int i = 0; i < 3; i++) {
+                List<Relation> wordBaseRelations = relation.getWordBase().getRelations();
+                Relation randomRelation = wordBaseRelations.get((int) (Math.random() * wordBaseRelations.size()));
+                meanings.add(language ? randomRelation.getMeaning() : randomRelation.getWord());
+            }
+            choiceModel.setMeanings(meanings);
+            choiceModels.add(choiceModel);
+        }
+        return choiceModels;
+    }
+
+    private List<Relation> getRelations(List<WordBase> wordBaseList) {
+        List<Relation> relations = new LinkedList<>();
+        for (WordBase wordBase : wordBaseList) {
+            relations.addAll(wordBase.getRelations());
+        }
+        List<Relation> output = new LinkedList<>();
+        for (int i = 0; i < 20; i++) {
+            int index = (int) (Math.random() * relations.size());
+            output.add(relations.get(index));
+            relations.remove(index);
+        }
+        return output;
+    }
+
+    public List<List<RelationModel>> getConnect(List<WordBase> wordBaseList) {
+        List<Relation> relations = getRelations(wordBaseList);
+        List<List<RelationModel>> connectList = new LinkedList<>();
+        for (int i = 0; i < 4; i++) {
+            List<RelationModel> relationModels = new LinkedList<>();
+            for (int j = 0; j < 5; j++) {
+                int index = (int) (Math.random() * relations.size());
+                Relation relation = relations.get(index);
+                relationModels.add(RelationModel.builder()
+                        .word(relation.getWord())
+                        .meaning(relation.getMeaning())
+                        .build());
+                relations.remove(index);
+            }
+            connectList.add(relationModels);
+        }
+        return connectList;
+    }
+
+    public List<RelationModel> getInsert(List<WordBase> wordBaseList) {
+        List<Relation> relations = getRelations(wordBaseList);
+        List<RelationModel> relationModels = new LinkedList<>();
+        for (int i = 0; i < 20; i++) {
+            int index = (int) (Math.random() * relations.size());
+            Relation relation = relations.get(index);
+            relationModels.add(RelationModel.builder()
+                    .word(relation.getWord())
+                    .meaning(relation.getMeaning())
+                    .build());
+            relations.remove(index);
+        }
+        return relationModels;
     }
 }
