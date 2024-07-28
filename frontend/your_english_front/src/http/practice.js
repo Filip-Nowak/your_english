@@ -15,6 +15,15 @@ export async function startChoice(wordbases) {
   return await fetchDataWithToken(link, "get");
 }
 
+export async function startInsert(wordbases) {
+  const link = getLink("insert", wordbases);
+  return await fetchDataWithToken(link, "get");
+}
+
+export async function startConnect(wordbases) {
+  const link = getLink("connect", wordbases);
+  return await fetchDataWithToken(link, "get");
+}
 function getLink(name, wordbases, page, newSet) {
   let link = `${url}/${name}?`;
   for (let wordbase of wordbases) {

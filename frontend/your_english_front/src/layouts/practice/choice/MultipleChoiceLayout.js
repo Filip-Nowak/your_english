@@ -10,6 +10,7 @@ export default function MultipleChoiceLayout() {
   const [answers, setAnswers] = useState(response.data[0].meanings);
   const [correct, setCorrect] = useState();
   const [answered, setAnswered] = useState(false);
+  const [points, setPoints] = useState(0);
   useEffect(() => {
     if (index === response.data.length) return;
     setAnswers((prevState) => {
@@ -23,15 +24,24 @@ export default function MultipleChoiceLayout() {
   }, [index]);
   const handleSubmit = (index) => {
     setAnswered(true);
+    if (index === correct) {
+      setPoints((prevState) => prevState + 1);
+    }
   };
   const handleNext = () => {
     setIndex((prevState) => prevState + 1);
     setAnswered(false);
   };
+  const handleRetry = () => {
+    document.location.reload();
+  };
+  const handleReturn = () => {
+    document.location.href = "/";
+  };
   return (
     <div style={{ width: "100%" }}>
       {index === response.data.length ? (
-        <Title>Finished</Title>
+        <div>finished</div>
       ) : (
         <div>
           <QuestWord number={index + 1} max={response.data.length}>

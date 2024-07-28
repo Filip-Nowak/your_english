@@ -1,4 +1,9 @@
-import { startChoice, startFlashcards } from "../../http/practice";
+import {
+  startChoice,
+  startConnect,
+  startFlashcards,
+  startInsert,
+} from "../../http/practice";
 import {
   getUserData,
   getWordbase,
@@ -47,6 +52,24 @@ export async function choiceLoader() {
     return null;
   }
   const response = await startChoice(params.w);
+  return { response: response };
+}
+
+export async function insertLoader() {
+  const params = getParams();
+  if (params === undefined) {
+    return null;
+  }
+  const response = await startInsert(params.w);
+  return { response: response };
+}
+
+export async function connectLoader() {
+  const params = getParams();
+  if (params === undefined) {
+    return null;
+  }
+  const response = await startConnect(params.w);
   return { response: response };
 }
 

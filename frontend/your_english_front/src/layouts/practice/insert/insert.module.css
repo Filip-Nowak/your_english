@@ -1,0 +1,49 @@
+.insertBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.input {
+  margin-top: 1rem;
+  width: 50rem;
+  height: 6rem;
+  padding: 2rem;
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-size: 4rem;
+}
+
+.submit {
+  margin-top: 1rem;
+  width: 20vw;
+  height: 10vh;
+  padding: 2vh;
+  border-radius: 0.5rem;
+  font-size: 4rem;
+  background-color: #000;
+  margin-top: 5vh;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit:hover {
+  background-color: #222;
+}
+
+.disabled {
+  background-color: #ccc;
+  cursor: normal;
+}
+.disabled:hover {
+  background-color: #ccc;
+}

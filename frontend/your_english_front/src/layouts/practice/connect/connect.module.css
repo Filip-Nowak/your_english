@@ -1,0 +1,74 @@
+.item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  height: 3vh;
+}
+.connectBox {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #f0f0f0;
+}
+.column {
+  display: flex;
+  width: 30%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 50vh;
+}
+.checked {
+  opacity: 0.5;
+  background-color: #ccc;
+}
+.nextBtn {
+  width: 15vw;
+  height: 5vh;
+  padding: 2vh;
+  border-radius: 0.5rem;
+  font-size: 3rem;
+  background-color: #000;
+  margin-top: 5vh;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.nextBtn:hover {
+  background-color: #333;
+}
+
+.item:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+.checked:hover {
+  cursor: auto;
+  background-color: #ccc;
+}
+.selected {
+  border: 5px solid #000;
+  width: calc(100% - 10px);
+  height: calc(3vh - 10px);
+}
+.nextDisabled {
+  background-color: #ccc;
+  cursor: auto;
+}
+.nextDisabled:hover {
+  background-color: #ccc;
+}

@@ -14,8 +14,10 @@ import MainPage from "./pages/mainPage/MainPage";
 import WordbasesLayout from "./layouts/wordbasesLayout/WordbasesLayout";
 import {
   choiceLoader,
+  connectLoader,
   flashcardsLoader,
   homeLoader,
+  insertLoader,
   practiceLoader,
   sidebarLoader,
   singleWordBaseLoader,
@@ -24,6 +26,8 @@ import {
 import PracticeLayout from "./layouts/practiceLayout/PracticeLayout";
 import FlashcardsLayout from "./layouts/practice/flashcards/FlashcardsLayout";
 import MultipleChoiceLayout from "./layouts/practice/choice/MultipleChoiceLayout";
+import InsertLayout from "./layouts/practice/insert/InsertLayout";
+import ConnectLayout from "./layouts/practice/connect/ConnectLayout";
 
 function App() {
   const router = createBrowserRouter(
@@ -58,6 +62,16 @@ function App() {
               path="choice"
               element={<MultipleChoiceLayout />}
               loader={choiceLoader}
+            />
+            <Route
+              path="insert"
+              element={<InsertLayout />}
+              loader={insertLoader}
+            />
+            <Route
+              path="connect"
+              element={<ConnectLayout />}
+              loader={connectLoader}
             />
           </Route>
           <Route path="/settings" element={<div>Settings</div>} />
