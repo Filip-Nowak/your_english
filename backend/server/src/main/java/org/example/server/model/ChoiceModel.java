@@ -13,4 +13,5 @@ import java.util.List;
 public class ChoiceModel {
     private String word;
     private List<String> meanings;
+    private String wordBaseName;
 }

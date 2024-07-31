@@ -4,57 +4,54 @@ import { useLoaderData } from "react-router-dom";
 import QuestWord from "./QuestWord";
 import AnswerBox from "./AnswerBox";
 
-export default function MultipleChoiceLayout() {
-  const { response } = useLoaderData();
-  const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState(response.data[0].meanings);
+export default function MultipleChoiceLayout({
+  numberInfo,
+  quest,
+  handleNext,
+  addPoints,
+  finishButton,
+}) {
+  console.log(quest);
+  const { word, meanings } = quest;
+  const [answers, setAnswers] = useState(meanings);
   const [correct, setCorrect] = useState();
-  const [answered, setAnswered] = useState(false);
-  const [points, setPoints] = useState(0);
   useEffect(() => {
-    if (index === response.data.length) return;
     setAnswers((prevState) => {
-      prevState = response.data[index].meanings;
+      prevState = meanings;
       let correctAnswer = prevState.shift();
       let randomIndex = Math.floor(Math.random() * 4);
       prevState.splice(randomIndex, 0, correctAnswer);
       setCorrect(randomIndex);
       return [...prevState];
     });
-  }, [index]);
+  }, [quest]);
+  const [answered, setAnswered] = useState(false);
   const handleSubmit = (index) => {
     setAnswered(true);
+    console.log(word);
+    console.log(quest);
     if (index === correct) {
-      setPoints((prevState) => prevState + 1);
+      addPoints(1, quest.wordBaseName);
+    } else {
+      addPoints(0, quest.wordBaseName);
     }
   };
-  const handleNext = () => {
-    setIndex((prevState) => prevState + 1);
+  const handleNextClick = () => {
     setAnswered(false);
-  };
-  const handleRetry = () => {
-    document.location.reload();
-  };
-  const handleReturn = () => {
-    document.location.href = "/";
+    handleNext();
   };
   return (
     <div style={{ width: "100%" }}>
-      {index === response.data.length ? (
-        <div>finished</div>
-      ) : (
-        <div>
-          <QuestWord number={index + 1} max={response.data.length}>
-            {response.data[index].word}
-          </QuestWord>
-          <AnswerBox
-            handleSubmit={handleSubmit}
-            answers={answers}
-            correct={answered ? correct : null}
-            handleNext={handleNext}
-          />
-        </div>
-      )}
+      <div>
+        <QuestWord numberInfo={numberInfo}>{word}</QuestWord>
+        <AnswerBox
+          handleSubmit={handleSubmit}
+          answers={answers}
+          correct={answered ? correct : null}
+          handleNext={handleNextClick}
+        />
+      </div>
+      {finishButton}
     </div>
   );
 }

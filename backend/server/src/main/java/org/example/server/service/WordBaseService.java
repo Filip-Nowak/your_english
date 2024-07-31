@@ -76,4 +76,8 @@ public class WordBaseService {
     public WordBase getWordBaseByName(String s, Long id) {
         return wordBaseRepository.findByNameAndUserId(s,id).orElseThrow(()->new RuntimeException("Word base not found: "+s));
     }
+
+    public WordBase getWordBaseById(Long id) {
+        return wordBaseRepository.findById(id).orElseThrow(()->new RuntimeException("Word base not found: "+id));
+    }
 }

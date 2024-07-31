@@ -3,6 +3,7 @@ import {
   startConnect,
   startFlashcards,
   startInsert,
+  startRandom,
 } from "../../http/practice";
 import {
   getUserData,
@@ -73,6 +74,14 @@ export async function connectLoader() {
   return { response: response };
 }
 
+export async function randomLoader() {
+  const params = getParams();
+  if (params === undefined) {
+    return null;
+  }
+  const response = await startRandom(params.w);
+  return { response: response };
+}
 function getParams() {
   const query = window.location.search;
   const params = {};

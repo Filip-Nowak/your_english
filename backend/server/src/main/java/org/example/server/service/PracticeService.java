@@ -4,15 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.server.entity.Relation;
 import org.example.server.entity.WordBase;
 import org.example.server.model.ChoiceModel;
+import org.example.server.model.RelationInfoModel;
 import org.example.server.model.RelationModel;
 import org.example.server.security.SessionData;
 import org.example.server.security.UserSession;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -109,15 +107,20 @@ public class PracticeService {
         List<Relation> relations = getRelations(wordBaseList);
         List<ChoiceModel> choiceModels = new LinkedList<>();
         for (Relation relation : relations) {
+            List<Relation> possibleRelations = new LinkedList<>(relation.getWordBase().getRelations());
+            System.out.println("chuj");
+            System.out.println(possibleRelations.size());
+            possibleRelations.remove(relation);
             boolean language = Math.random() < 0.5;
             ChoiceModel choiceModel = new ChoiceModel();
+            choiceModel.setWordBaseName(relation.getWordBase().getName());
             choiceModel.setWord(language ? relation.getWord() : relation.getMeaning());
             List<String> meanings = new LinkedList<>();
             meanings.add(language ? relation.getMeaning() : relation.getWord());
             for (int i = 0; i < 3; i++) {
-                List<Relation> wordBaseRelations = relation.getWordBase().getRelations();
-                Relation randomRelation = wordBaseRelations.get((int) (Math.random() * wordBaseRelations.size()));
-                meanings.add(language ? randomRelation.getMeaning() : randomRelation.getWord());
+                Relation answer = possibleRelations.get((int) (Math.random() * possibleRelations.size()));
+                meanings.add(language ? answer.getMeaning() : answer.getWord());
+                possibleRelations.remove(answer);
             }
             choiceModel.setMeanings(meanings);
             choiceModels.add(choiceModel);
@@ -139,17 +142,18 @@ public class PracticeService {
         return output;
     }
 
-    public List<List<RelationModel>> getConnect(List<WordBase> wordBaseList) {
+    public List<List<RelationInfoModel>> getConnect(List<WordBase> wordBaseList) {
         List<Relation> relations = getRelations(wordBaseList);
-        List<List<RelationModel>> connectList = new LinkedList<>();
+        List<List<RelationInfoModel>> connectList = new LinkedList<>();
         for (int i = 0; i < 4; i++) {
-            List<RelationModel> relationModels = new LinkedList<>();
+            List<RelationInfoModel> relationModels = new LinkedList<>();
             for (int j = 0; j < 5; j++) {
                 int index = (int) (Math.random() * relations.size());
                 Relation relation = relations.get(index);
-                relationModels.add(RelationModel.builder()
+                relationModels.add(RelationInfoModel.builder()
                         .word(relation.getWord())
                         .meaning(relation.getMeaning())
+                        .wordBaseName(relation.getWordBase().getName())
                         .build());
                 relations.remove(index);
             }
@@ -158,18 +162,75 @@ public class PracticeService {
         return connectList;
     }
 
-    public List<RelationModel> getInsert(List<WordBase> wordBaseList) {
+    public List<RelationInfoModel> getInsert(List<WordBase> wordBaseList) {
         List<Relation> relations = getRelations(wordBaseList);
-        List<RelationModel> relationModels = new LinkedList<>();
+        List<RelationInfoModel> relationModels = new LinkedList<>();
         for (int i = 0; i < 20; i++) {
             int index = (int) (Math.random() * relations.size());
             Relation relation = relations.get(index);
-            relationModels.add(RelationModel.builder()
+            relationModels.add(RelationInfoModel.builder()
                     .word(relation.getWord())
                     .meaning(relation.getMeaning())
+                    .wordBaseName(relation.getWordBase().getName())
                     .build());
             relations.remove(index);
         }
         return relationModels;
+    }
+
+    public Map<String, Object> getRandom(List<WordBase> wordBaseList) {
+        List<Relation> relations = getRelations(wordBaseList);
+        int mode = (int) (Math.random() * 3);
+        if (mode == 0) {
+            return Map.of("mode", "choice", "quest", getSingleChoice(relations));
+        } else if (mode == 1) {
+            return Map.of("mode", "insert", "quest", getSingleInsert(relations));
+        } else {
+            return Map.of("mode", "connect", "quest", getSingleConnect(relations));
+        }
+    }
+
+    private List<RelationInfoModel> getSingleConnect(List<Relation> relations) {
+        List<RelationInfoModel> relationModels = new LinkedList<>();
+        for (int i = 0; i < 5; i++) {
+            int index = (int) (Math.random() * relations.size());
+            Relation relation = relations.get(index);
+            relationModels.add(RelationInfoModel.builder()
+                    .word(relation.getWord())
+                    .meaning(relation.getMeaning())
+                    .wordBaseName(relation.getWordBase().getName())
+                    .build());
+            relations.remove(index);
+        }
+        return relationModels;
+    }
+
+    private RelationInfoModel getSingleInsert(List<Relation> relations) {
+        Relation relation = relations.get((int) (Math.random() * relations.size()));
+        RelationInfoModel relationModel = RelationInfoModel.builder()
+                .word(relation.getWord())
+                .meaning(relation.getMeaning())
+                .wordBaseName(relation.getWordBase().getName())
+                .build();
+        return relationModel;
+    }
+
+    private ChoiceModel getSingleChoice(List<Relation> relations) {
+        Relation relation = relations.get((int) (Math.random() * relations.size()));
+        List<Relation> possibleRelations = new LinkedList<>(relation.getWordBase().getRelations());
+        possibleRelations.remove(relation);
+        boolean language = Math.random() < 0.5;
+        ChoiceModel choiceModel = new ChoiceModel();
+        choiceModel.setWordBaseName(relation.getWordBase().getName());
+        choiceModel.setWord(language ? relation.getWord() : relation.getMeaning());
+        List<String> meanings = new LinkedList<>();
+        meanings.add(language ? relation.getMeaning() : relation.getWord());
+        for (int i = 0; i < 3; i++) {
+            Relation answer = possibleRelations.get((int) (Math.random() * possibleRelations.size()));
+            meanings.add(language ? answer.getMeaning() : answer.getWord());
+            possibleRelations.remove(answer);
+        }
+        choiceModel.setMeanings(meanings);
+        return choiceModel;
     }
 }

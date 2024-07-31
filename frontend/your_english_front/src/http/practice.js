@@ -24,6 +24,11 @@ export async function startConnect(wordbases) {
   const link = getLink("connect", wordbases);
   return await fetchDataWithToken(link, "get");
 }
+
+export async function startRandom(wordbases, page) {
+  const link = getLink("random", wordbases, page);
+  return await fetchDataWithToken(link, "get");
+}
 function getLink(name, wordbases, page, newSet) {
   let link = `${url}/${name}?`;
   for (let wordbase of wordbases) {

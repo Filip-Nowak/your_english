@@ -19,6 +19,7 @@ import {
   homeLoader,
   insertLoader,
   practiceLoader,
+  randomLoader,
   sidebarLoader,
   singleWordBaseLoader,
   wordbasesLoader,
@@ -28,6 +29,11 @@ import FlashcardsLayout from "./layouts/practice/flashcards/FlashcardsLayout";
 import MultipleChoiceLayout from "./layouts/practice/choice/MultipleChoiceLayout";
 import InsertLayout from "./layouts/practice/insert/InsertLayout";
 import ConnectLayout from "./layouts/practice/connect/ConnectLayout";
+import FinishedLayout from "./layouts/practice/finshed/FinishedLayout";
+import ChoicePractice from "./layouts/practice/choice/ChoicePractice";
+import ConnectPractice from "./layouts/practice/connect/ConnectPractice";
+import InsertPractice from "./layouts/practice/insert/InsertPractice";
+import RandomPractice from "./layouts/practice/random/RandomPractice";
 
 function App() {
   const router = createBrowserRouter(
@@ -60,19 +66,47 @@ function App() {
             />
             <Route
               path="choice"
-              element={<MultipleChoiceLayout />}
+              element={<ChoicePractice />}
               loader={choiceLoader}
             />
             <Route
               path="insert"
-              element={<InsertLayout />}
+              element={<InsertPractice />}
               loader={insertLoader}
             />
             <Route
               path="connect"
-              element={<ConnectLayout />}
+              element={<ConnectPractice />}
               loader={connectLoader}
             />
+            <Route
+              path="random"
+              element={<RandomPractice />}
+              loader={randomLoader}
+            />
+            {/* <Route
+              path="test"
+              element={
+                <FinishedLayout
+                  results={{
+                    wordbases: [
+                      {
+                        name: "animals",
+                        maxScore: 20,
+                        score: 15,
+                      },
+                      {
+                        name: "colors",
+                        maxScore: 10,
+                        score: 10,
+                      },
+                    ],
+                    time: 68,
+                    type: "choice",
+                  }}
+                />
+              }
+            /> */}
           </Route>
           <Route path="/settings" element={<div>Settings</div>} />
         </Route>

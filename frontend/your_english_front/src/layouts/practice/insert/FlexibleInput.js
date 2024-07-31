@@ -10,7 +10,6 @@ export default function FlexibleInput({
     if (disabled) return;
     setContent(e.target.value);
   };
-  console.log("correct", correct);
   return (
     <textarea
       className={styles.input}

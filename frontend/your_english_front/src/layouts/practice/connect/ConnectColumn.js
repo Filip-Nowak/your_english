@@ -10,6 +10,7 @@ export default function ConnectColumn({ words, handleSelect, selected }) {
           item={word}
           selected={index === selected}
           onClick={() => {
+            if (word.checked) return;
             handleSelect(index);
           }}
         />

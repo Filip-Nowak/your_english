@@ -5,10 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.server.entity.User;
 import org.example.server.entity.WordBase;
-import org.example.server.model.ChoiceModel;
-import org.example.server.model.FlashcardsModel;
-import org.example.server.model.RelationModel;
-import org.example.server.model.ResponseModel;
+import org.example.server.model.*;
 import org.example.server.security.UserSession;
 import org.example.server.service.PracticeService;
 import org.example.server.service.UserService;
@@ -65,7 +62,7 @@ public class PracticeController {
 
     @GetMapping("/choice")
     public ResponseEntity<ResponseModel> getChoice(@RequestHeader(name = "Authorization") String header, @RequestParam List<String> w) {
-        try {
+//        try {
             User user = userService.getUserByHeader(header);
             List<WordBase> wordBaseList = new LinkedList<>();
             for (String s : w) {
@@ -80,13 +77,13 @@ public class PracticeController {
                     .data(relationModels)
                     .build());
 
-        } catch (RuntimeException e) {
-            System.out.println(e);
-            return ResponseEntity.ok(ResponseModel.builder()
-                    .error(true)
-                    .message("Error: " + e.getMessage())
-                    .build());
-        }
+//        } catch (RuntimeException e) {
+//            System.out.println(e);
+//            return ResponseEntity.ok(ResponseModel.builder()
+//                    .error(true)
+//                    .message("Error: " + e.getMessage())
+//                    .build());
+//        }
     }
 
     @GetMapping("/connect")
@@ -97,7 +94,7 @@ public class PracticeController {
             for (String s : w) {
                 wordBaseList.add(wordBaseService.getWordBaseByName(s, user.getId()));
             }
-            List<List<RelationModel>> relationModels = practiceService.getConnect(wordBaseList);
+            List<List<RelationInfoModel>> relationModels = practiceService.getConnect(wordBaseList);
             if (relationModels.isEmpty()) {
                 throw new RuntimeException("No more connections");
             }
@@ -122,13 +119,37 @@ public class PracticeController {
             for (String s : w) {
                 wordBaseList.add(wordBaseService.getWordBaseByName(s, user.getId()));
             }
-            List<RelationModel> relationModels = practiceService.getInsert(wordBaseList);
+            List<RelationInfoModel> relationModels = practiceService.getInsert(wordBaseList);
             if (relationModels.isEmpty()) {
                 throw new RuntimeException("No more insertions");
             }
             return ResponseEntity.ok(ResponseModel.builder()
                     .error(false)
                     .data(relationModels)
+                    .build());
+        } catch (RuntimeException e) {
+            System.out.println(e);
+            return ResponseEntity.ok(ResponseModel.builder()
+                    .error(true)
+                    .message("Error: " + e.getMessage())
+                    .build());
+        }
+    }
+    @GetMapping("/random")
+    public ResponseEntity<ResponseModel> getRandom(@RequestHeader(name = "Authorization") String header, @RequestParam List<String> w) {
+        try {
+            User user = userService.getUserByHeader(header);
+            List<WordBase> wordBaseList = new LinkedList<>();
+            for (String s : w) {
+                wordBaseList.add(wordBaseService.getWordBaseByName(s, user.getId()));
+            }
+            Map<String,Object> model= practiceService.getRandom(wordBaseList);
+            if (model.isEmpty()) {
+                throw new RuntimeException("No more random");
+            }
+            return ResponseEntity.ok(ResponseModel.builder()
+                    .error(false)
+                    .data(model)
                     .build());
         } catch (RuntimeException e) {
             System.out.println(e);

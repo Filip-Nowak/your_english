@@ -2,22 +2,28 @@ import React, { useEffect, useState } from "react";
 import QuestWord from "../choice/QuestWord";
 import { useLoaderData } from "react-router-dom";
 import InsertBox from "./InsertBox";
+import FinishButton from "../finshed/FinishButton";
 
-export default function InsertLayout() {
-  const { response } = useLoaderData();
-  const words = response.data;
-  const [quest, setQuest] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [index, setIndex] = useState(0);
+export default function InsertLayout({
+  word,
+  handleNext,
+  numberInfo,
+  addPoints,
+  finishButton,
+}) {
   const [correct, setCorrect] = useState(null);
+  const [answer, setAnswer] = useState("");
   const handleSubmit = (answer) => {
-    setCorrect(checkCorrectness(answer));
-  };
-  useEffect(() => {
-    if (index !== words.length) {
-      setQuestion(words[index]);
+    const c = checkCorrectness(answer);
+    setCorrect(c);
+    console.log(word);
+    if (c) {
+      console.log(word);
+      addPoints(1, word.wordBaseName);
+    } else {
+      addPoints(0, word.wordBaseName);
     }
-  }, [index]);
+  };
   useEffect(() => {
     if (correct === null) {
       document.body.style.backgroundColor = "white";
@@ -31,32 +37,15 @@ export default function InsertLayout() {
     };
   }, [correct]);
 
-  const setQuestion = ({ word, meaning }) => {
-    const r = Math.random();
-    if (r < 0.5) {
-      setQuest(word);
-      setAnswer(meaning);
-    } else {
-      setQuest(meaning);
-      setAnswer(word);
-    }
-  };
-
   const checkCorrectness = (userAnswer) => {
     userAnswer = userAnswer.trim();
     userAnswer = userAnswer.toLowerCase();
-    return userAnswer === answer;
-  };
-  const handleNext = () => {
-    setIndex(index + 1);
-    setCorrect(null);
+    return userAnswer === word.meaning.toLowerCase();
   };
 
   return (
     <div style={{ width: "100%" }}>
-      <QuestWord number={index + 1} max={response.data.length}>
-        {quest}
-      </QuestWord>
+      <QuestWord numberInfo={numberInfo}>{word.word}</QuestWord>
       <div
         style={{
           height: "3rem",
@@ -72,15 +61,19 @@ export default function InsertLayout() {
         {correct === null ? null : correct ? "correct" : "incorrect"}
         {correct === false ? (
           <div style={{ fontSize: "1.5rem", color: "black" }}>
-            correct answer: {answer}
+            correct answer: {word.meaning}
           </div>
         ) : null}
       </div>
       <InsertBox
         handleSubmit={handleSubmit}
         correct={correct}
-        handleNext={handleNext}
+        handleNext={(xd) => {
+          setCorrect(null);
+          handleNext(xd);
+        }}
       />
+      {finishButton}
     </div>
   );
 }
