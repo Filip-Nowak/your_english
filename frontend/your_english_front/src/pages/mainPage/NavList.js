@@ -4,55 +4,51 @@ import WordbaseList from "./WordbaseList";
 
 export default function NavList({ arr, name, expanded, setExpanded }) {
   return (
-    <div style={expanded ? { backgroundColor: "#333333" } : {}}>
-      <div
-        className={
-          styles.navBtn +
-          " " +
-          (window.location.pathname === "/wordbases" ? styles.selectedBtn : "")
-        }
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: 0,
-        }}
-      >
+    <div style={{ height: "40vh" }}>
+      <div style={expanded ? { backgroundColor: "#333333" } : {}}>
         <div
-          style={{
-            paddingTop: "1rem",
-            paddingBottom: "1rem",
-            display: "flex",
-            height: "100%",
-            width: "100%",
-          }}
           onClick={() => {
             window.location.pathname = "/wordbases";
           }}
+          style={
+            window.location.pathname === "/wordbases" ? {} : { color: "white" }
+          }
+          className={
+            styles.navListButton +
+            " " +
+            (window.location.pathname === "/wordbases"
+              ? styles.selectedBtn
+              : "")
+          }
         >
-          <div style={{ marginLeft: "1rem" }}>
-            {<i className="fa-solid fa-list"></i>}
+          <div style={{ display: "flex", width: "80%" }}>
+            <div style={{ marginLeft: "1rem" }}>
+              <i className="fa-solid fa-list"></i>
+            </div>
+            <div style={{ marginLeft: "1rem" }}>wordbases</div>
           </div>
-          <div style={{ marginLeft: "1rem" }}>{name}</div>
+          <div
+            style={{
+              textAlign: "center",
+              width: "20%",
+            }}
+          >
+            <i
+              onClick={(e) => {
+                setExpanded(!expanded);
+                e.stopPropagation();
+              }}
+              style={{
+                textAlign: "center",
+              }}
+              className={
+                expanded ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"
+              }
+            ></i>
+          </div>
         </div>
-        <div
-          onClick={() => {
-            setExpanded((prevState) => !prevState);
-          }}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            paddingRight: "1rem",
-            paddingLeft: "1rem",
-          }}
-        >
-          {expanded ? (
-            <i className="fas fa-chevron-up"></i>
-          ) : (
-            <i className="fas fa-chevron-down"></i>
-          )}
-        </div>
+        {expanded && <WordbaseList wordbases={arr} />}
       </div>
-      {expanded ? <WordbaseList wordbases={arr} /> : ""}
     </div>
   );
 }

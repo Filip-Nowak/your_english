@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class ExceptionHandler extends ResponseEntityExceptionHandler{
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        System.out.println("handling exception");
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> fieldError.getField() + ":" + fieldError.getDefaultMessage())
                 .reduce("", (acc, err) -> acc + err + ";");

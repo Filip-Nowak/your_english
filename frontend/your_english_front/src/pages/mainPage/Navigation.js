@@ -7,7 +7,7 @@ export default function Navigation({ wordbases, name }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div>
-      <div className={styles.buttons}>
+      <div className={styles.buttonContainer}>
         <NavButton
           name="Home"
           icon={<i className="fa-solid fa-house"></i>}

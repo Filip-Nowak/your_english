@@ -24,6 +24,7 @@ public class User implements UserDetails {
     private String name;
     private String password;
     private String email;
+    private boolean enabled = false;
     @OneToMany(mappedBy = "user")
     private List<WordBase> wordBases;
 
@@ -36,4 +37,6 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+
 }

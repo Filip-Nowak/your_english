@@ -28,20 +28,20 @@ public class ServerApplication {
     }
 
     private void fillSongs(UserService userService, WordBaseService wordBaseService, AuthenticationService authenticationService) {
-        authenticationService.register(RegisterRequest.builder()
-                .email("xd@xd")
-                .name("xd")
-                .password("asdfasdf")
-                .build());
-        User user = userService.getUserByEmail("xd@xd");
-        WordBase wordBase = WordBase.builder()
-                .name("my wordbase")
-                .relations(new LinkedList<>())
-                .user(user).build();
-        wordBaseService.saveWordBase(wordBase);
-        for (int i = 0; i < 25; i++) {
-            wordBaseService.addRelation(wordBase, "word" + i, "meaning" + i);
-        }
+//        authenticationService.register(RegisterRequest.builder()
+//                .email("xd@xd")
+//                .name("xd")
+//                .password("asdfasdf")
+//                .build());
+//        User user = userService.getUserByEmail("xd@xd");
+//        WordBase wordBase = WordBase.builder()
+//                .name("my wordbase")
+//                .relations(new LinkedList<>())
+//                .user(user).build();
+//        wordBaseService.saveWordBase(wordBase);
+//        for (int i = 0; i < 25; i++) {
+//            wordBaseService.addRelation(wordBase, "word" + i, "meaning" + i);
+//        }
 //        WordBase wordBase2 = WordBase.builder()
 //                .name("my wordbase2")
 //                .relations(new LinkedList<>())

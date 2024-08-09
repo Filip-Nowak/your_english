@@ -28,7 +28,7 @@ public class AuthenticationController {
             response = authenticationService.register(request);
         } catch (RuntimeException e) {
             return ResponseEntity.ok(AuthenticationResponse.builder()
-                    .errors("email:Email already exists;")
+                    .errors(e.getMessage())
                     .build());
         }
         return ResponseEntity.ok(response);
@@ -56,4 +56,15 @@ public class AuthenticationController {
                 .message("logout success")
                 .build());
     }
+    @GetMapping("/test")
+    public ResponseEntity<ResponseModel> test(){
+        return ResponseEntity.ok(ResponseModel.builder()
+                .message("test success")
+                .build());
+    }
+    @GetMapping("/confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return authenticationService.confirmToken(token);
+    }
+
 }
