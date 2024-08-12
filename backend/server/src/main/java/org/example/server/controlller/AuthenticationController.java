@@ -2,6 +2,7 @@ package org.example.server.controlller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.server.model.RegisterResponse;
 import org.example.server.model.ResponseModel;
 import org.example.server.security.auth.AuthenticationRequest;
 import org.example.server.security.auth.AuthenticationResponse;
@@ -20,14 +21,14 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<RegisterResponse> register(
             @Valid @RequestBody RegisterRequest request
     ) {
-        AuthenticationResponse response;
+        RegisterResponse response;
         try {
             response = authenticationService.register(request);
         } catch (RuntimeException e) {
-            return ResponseEntity.ok(AuthenticationResponse.builder()
+            return ResponseEntity.ok(RegisterResponse.builder()
                     .errors(e.getMessage())
                     .build());
         }

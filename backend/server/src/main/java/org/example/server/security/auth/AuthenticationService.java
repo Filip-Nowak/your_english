@@ -3,8 +3,10 @@ package org.example.server.security.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.example.server.entity.User;
+import org.example.server.model.RegisterResponse;
 import org.example.server.repository.UserRepository;
 import org.example.server.security.JwtService;
+import org.example.server.service.EmailSendingService;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +26,8 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
-    public AuthenticationResponse register(RegisterRequest request) throws RuntimeException{
+    private final EmailSendingService emailSendingService;
+    public RegisterResponse register(RegisterRequest request) throws RuntimeException{
         if(userRepository.existsByEmail(request.getEmail())){
             System.out.println("Email already exists");
             throw new RuntimeException("Email already exists");
@@ -45,8 +48,9 @@ public class AuthenticationService {
                 .build();
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 //        var jwtToken=jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token("token")
+        emailSendingService.send(request.getEmail(), "go to http://localhost:8080/api/auth/confirm?token="+token+" to confirm your email");
+        return RegisterResponse.builder()
+                .errors(null)
                 .build();
     }
 
