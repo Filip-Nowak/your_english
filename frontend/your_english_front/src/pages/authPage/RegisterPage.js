@@ -45,11 +45,9 @@ export default function RegisterPage() {
     console.log(response);
   };
 
-  const onRegisterSuccess = (token) => {
+  const onRegisterSuccess = () => {
     console.log("register success");
-    console.log(token);
-    localStorage.setItem("token", token);
-    window.location.href = "/";
+    window.location.href = "/emailSent";
   };
   return (
     <div>

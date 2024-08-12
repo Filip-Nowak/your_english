@@ -15,7 +15,7 @@ export async function register(
   if (response.ok) {
     const data = await response.json();
     if (data.errors === null) {
-      onRegisterSuccess(data.token);
+      onRegisterSuccess();
     } else {
       const errorsArr = data.errors.split(";");
       errorsArr.pop();

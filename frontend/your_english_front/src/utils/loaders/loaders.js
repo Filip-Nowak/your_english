@@ -26,6 +26,7 @@ export async function wordbasesLoader() {
 export async function singleWordBaseLoader({ params }) {
   const name = params.name;
   const wordbaseResponse = await getWordbase(name);
+  console.log(wordbaseResponse);
   return { wordbaseResponse: wordbaseResponse };
 }
 export async function practiceLoader() {
@@ -105,4 +106,15 @@ function getParams() {
     params.w = [params.w];
   }
   return params;
+}
+
+export async function confirmLoader({ params }) {
+  const token = params.token;
+  const response = await fetch(
+    `http://localhost:8080/api/auth/confirm?token=${token}`,
+    { headers: { "Content-Type": "application/json" } }
+  );
+  console.log(response);
+  const data = await response.json();
+  return { error: data.error, message: data.message };
 }

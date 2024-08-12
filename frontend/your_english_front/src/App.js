@@ -14,6 +14,7 @@ import MainPage from "./pages/mainPage/MainPage";
 import WordbasesLayout from "./layouts/wordbasesLayout/WordbasesLayout";
 import {
   choiceLoader,
+  confirmLoader,
   connectLoader,
   flashcardsLoader,
   homeLoader,
@@ -34,6 +35,8 @@ import ChoicePractice from "./layouts/practice/choice/ChoicePractice";
 import ConnectPractice from "./layouts/practice/connect/ConnectPractice";
 import InsertPractice from "./layouts/practice/insert/InsertPractice";
 import RandomPractice from "./layouts/practice/random/RandomPractice";
+import ConfirmPage from "./pages/confirm/ConfirmPage";
+import EmailSentPage from "./pages/confirm/EmailSentPage";
 
 function App() {
   const router = createBrowserRouter(
@@ -110,6 +113,12 @@ function App() {
           </Route>
           <Route path="/settings" element={<div>Settings</div>} />
         </Route>
+        <Route
+          path="/confirm/:token"
+          element={<ConfirmPage />}
+          loader={confirmLoader}
+        />
+        <Route path="/emailSent" element={<EmailSentPage />} />
       </Route>
     )
   );

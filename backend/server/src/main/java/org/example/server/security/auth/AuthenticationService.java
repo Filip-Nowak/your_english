@@ -48,7 +48,7 @@ public class AuthenticationService {
                 .build();
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 //        var jwtToken=jwtService.generateToken(user);
-        emailSendingService.send(request.getEmail(), "go to http://localhost:8080/api/auth/confirm?token="+token+" to confirm your email");
+        emailSendingService.send(request.getEmail(), "go to http://localhost:3000/confirm/"+token+" to confirm your email");
         return RegisterResponse.builder()
                 .errors(null)
                 .build();
@@ -75,7 +75,7 @@ public class AuthenticationService {
     }
 
     @Transactional
-    public String confirmToken(String token) {
+    public boolean confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
@@ -95,6 +95,6 @@ public class AuthenticationService {
         User user = confirmationToken.getUser();
         user.setEnabled(true);
         userRepository.save(user);
-        return "confirmed";
+        return true;
     }
 }

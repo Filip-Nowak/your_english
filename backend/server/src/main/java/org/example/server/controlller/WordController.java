@@ -1,5 +1,6 @@
 package org.example.server.controlller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.server.entity.Relation;
 import org.example.server.entity.User;
@@ -54,7 +55,7 @@ public class WordController {
 
     @PostMapping("/wordbase")
     public ResponseEntity<ResponseModel> addWordBase(@RequestHeader(name = "Authorization") String header,
-                                                     @RequestBody WordBaseModel wordBaseModel) {
+                                                     @RequestBody @Valid WordBaseModel wordBaseModel) {
         User user = userService.getUserByHeader(header);
         if (wordBaseService.doesWordBaseExist(wordBaseModel.getName(), user.getId())) {
             return ResponseEntity.ok().body(ResponseModel.builder()
@@ -71,7 +72,7 @@ public class WordController {
 
     @PostMapping("/wordbase/{name}/relation")
     public ResponseEntity<ResponseModel> addRelation(@RequestHeader(name = "Authorization") String header,
-                                                     @RequestBody AddRelationModel addRelationModel,
+                                                     @RequestBody @Valid AddRelationModel addRelationModel,
                                                      @PathVariable String name) {
         User user = userService.getUserByHeader(header);
         WordBase wordBase = user.getWordBases().stream()
@@ -92,7 +93,7 @@ public class WordController {
 
     @PutMapping("/wordbase/{name}/relation/{number}")
     public ResponseEntity<ResponseModel> editRelation(@RequestHeader(name = "Authorization") String header,
-                                                      @RequestBody AddRelationModel addRelationModel,
+                                                      @RequestBody @Valid AddRelationModel addRelationModel,
                                                       @PathVariable String name,
                                                       @PathVariable int number) {
         User user = userService.getUserByHeader(header);

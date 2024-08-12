@@ -37,7 +37,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody AuthenticationRequest request
+            @RequestBody @Valid AuthenticationRequest request
     ) {
         System.out.println("authenticating");
         AuthenticationResponse response;
@@ -64,8 +64,18 @@ public class AuthenticationController {
                 .build());
     }
     @GetMapping("/confirm")
-    public String confirm(@RequestParam("token") String token) {
-        return authenticationService.confirmToken(token);
+    public ResponseModel confirm(@RequestParam("token") String token) {
+       try{
+           authenticationService.confirmToken(token);
+              return ResponseModel.builder()
+
+                     .build();
+       }catch (RuntimeException e){
+           return ResponseModel.builder()
+                   .error(true)
+                   .message(e.getMessage())
+                   .build();
+       }
     }
 
 }

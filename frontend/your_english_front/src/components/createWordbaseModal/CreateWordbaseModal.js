@@ -21,7 +21,8 @@ export default function CreateWordbaseModal({ hideModal }) {
         setError(response.message);
         return;
       }
-      window.location.href = "/wordbase/" + name;
+      const url = encodeURI("/wordbase/" + name);
+      window.location.href = url;
     });
   };
   const handleCreate = async () => {
@@ -38,7 +39,12 @@ export default function CreateWordbaseModal({ hideModal }) {
           justifyContent: "center",
         }}
       >
-        <input type="text" className={styles.input} onChange={onTextChange} />
+        <input
+          type="text"
+          className={styles.input}
+          onChange={onTextChange}
+          maxLength={30}
+        />
         <div
           onClick={onCreateClick}
           style={{ fontSize: "3rem", marginLeft: "2rem" }}
