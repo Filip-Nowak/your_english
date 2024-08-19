@@ -22,12 +22,13 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
 }
 .input {
-  margin: 1rem;
+  /* margin: 1rem; */
   padding: 1rem;
   font-size: 1.5rem;
+  border: 1px solid #444444;
 }
 .btn {
   width: 60%;
@@ -38,9 +39,22 @@
   color: white;
   font-size: 1.5rem;
   text-transform: uppercase;
+  margin-top: 2rem;
 }
 .newAccount {
   text-align: center;
   margin-top: 2rem;
   font-size: 1.5rem;
+}
+.error {
+  color: red;
+  height: 3rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: end;
+}
+.badInput {
+  border: 5px solid red;
+  width: calc(100% - 2rem- 10px);
+  height: calc(100% -2rem - 10px);
 }

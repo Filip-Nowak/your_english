@@ -93,13 +93,17 @@ export default function WordsContainer({
           }}
           fontSize="2rem"
         />
-        {relations.length >= 5 ? (
+        {relations.length >= 20 ? (
           <MenuBtn
             text="pracise"
             icon={<i className="fa-solid fa-pen-to-square"></i>}
             height="6vh"
             width="30vh"
             fontSize="2rem"
+            onClick={() => {
+              window.location.href =
+                "/practice?wordbase=" + window.location.href.split("/")[4];
+            }}
             containerStyle={{
               margin: "0",
               marginRight: "15%",
@@ -117,7 +121,7 @@ export default function WordsContainer({
               fontSize: "1.5rem",
             }}
           >
-            you need at lest 5 relations to practise
+            you need at lest 20 relations to practise
           </div>
         )}
       </div>

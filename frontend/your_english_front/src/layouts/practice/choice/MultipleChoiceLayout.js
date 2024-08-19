@@ -40,6 +40,8 @@ export default function MultipleChoiceLayout({
     setAnswered(false);
     handleNext();
   };
+  console.log(answers);
+  console.log(correct);
   return (
     <div style={{ width: "100%" }}>
       <div>

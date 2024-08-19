@@ -7,27 +7,12 @@ import FinishButton from "../finshed/FinishButton";
 export default function ChoicePractice() {
   const { response } = useLoaderData();
   const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState(response.data[0].meanings);
-  const [correct, setCorrect] = useState();
-  const [points, setPoints] = useState(0);
   const [wordbases, setWordbases] = useState([]);
-  useEffect(() => {
-    if (index === response.data.length) return;
-    setAnswers((prevState) => {
-      prevState = response.data[index].meanings;
-      let correctAnswer = prevState.shift();
-      let randomIndex = Math.floor(Math.random() * 4);
-      prevState.splice(randomIndex, 0, correctAnswer);
-      setCorrect(randomIndex);
-      return [...prevState];
-    });
-  }, [index]);
   const handleNext = () => {
     setIndex((prevState) => prevState + 1);
   };
 
   const addPoint = (points) => {
-    setPoints((prevState) => prevState + 1);
     setWordbases((prevState) => {
       for (let i = 0; i < prevState.length; i++) {
         if (prevState[i].name === response.data[index].wordBaseName) {

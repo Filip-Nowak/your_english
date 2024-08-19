@@ -30,6 +30,7 @@ export default function SelectedWordbases({
       )
     );
   };
+  console.log(wordbases);
   return (
     <div>
       <div className={styles.container}>
@@ -80,7 +81,9 @@ export default function SelectedWordbases({
         <WordbaseModal
           handleCancel={handleCancel}
           wordbases={wordbases.filter(
-            (wordbase) => !selectedWordbases.includes(wordbase)
+            (wordbase) =>
+              !selectedWordbases.includes(wordbase.name) &&
+              wordbase.wordCount >= 20
           )}
           addWordbase={addWordbase}
         />

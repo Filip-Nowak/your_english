@@ -30,7 +30,7 @@ export async function singleWordBaseLoader({ params }) {
   return { wordbaseResponse: wordbaseResponse };
 }
 export async function practiceLoader() {
-  const wordbasesResponse = await getWordbases();
+  const wordbasesResponse = await getWordbasesWithCount();
   return { wordbasesResponse: wordbasesResponse };
 }
 export async function flashcardsLoader() {

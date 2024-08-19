@@ -17,10 +17,10 @@ export default function WordbaseModal({
               key={wordbase.id}
               className={styles.pick}
               onClick={() => {
-                addWordbase(wordbase);
+                addWordbase(wordbase.name);
               }}
             >
-              {wordbase}
+              {wordbase.name}
             </div>
           ))}
         </div>
